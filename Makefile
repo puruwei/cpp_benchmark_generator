@@ -1,12 +1,18 @@
 # Váriavel opcional contendo o diretório alvo da compilação do módulo
-OUT_DIR ?= ./a.out.js
+OUT_DIR ?= ./
 
 clear:
-	@rm a.out.js
-	@rm a.out.wasm
+	@echo "$$(basename $$(pwd))"
+	@if [ -d "$$(basename $$(pwd))" ]; then \
+		echo "$(basename $(pwd))"; \
+		rm -rf "$$(basename $$(pwd))"; \
+	else \
+		echo "nada pra limpar aqui"; \
+	fi
 
 build:
-	@emcc benchmarks.cpp -o $(OUT_DIR) \
+	@mkdir "$(OUT_DIR)/$$(basename $$(pwd))/"
+	@emcc benchmarks.cpp -o "$(OUT_DIR)/$$(basename $$(pwd))/a.out.js" \
 -s MODULARIZE=1 \
 -s EXPORT_ES6=1 \
 -s EXPORT_NAME="BenchmarkModule" \
